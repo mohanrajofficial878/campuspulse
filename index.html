@@ -1,780 +1,2997 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusPulse - Ultimate Student Dashboard</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f3ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#1e1b4b',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome & Lucide Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Web App Manifest for Mobile Installation -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#6366f1">
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CampusPulse - Vel Tech High Tech</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080d19;
+      --card: #111a2b;
+      --card2: #172238;
+      --primary: #6c63ff;
+      --secondary: #00d4ff;
+      --pink: #ff6b9d;
+      --yellow: #ffd166;
+      --green: #06d6a0;
+      --red: #ff6b6b;
+      --text: #edf2ff;
+      --muted: #8d9ab0;
+      --border: rgba(108, 99, 255, .25);
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(108, 99, 255, .12), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(0, 212, 255, .10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ================= LOGIN ================= */
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 430px;
+      padding: 42px;
+      background: rgba(17, 26, 43, .95);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+    }
+
+    .logo {
+      width: 75px;
+      height: 75px;
+      margin: auto;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .login-box h1 {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 28px;
+    }
+
+    .login-box .college {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 7px;
+      line-height: 1.5;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin: 30px 0 22px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      background: #0a1220;
+      color: white;
+      border: 1px solid #30415e;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--secondary);
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .login-button:hover {
+      opacity: .9;
+    }
+
+    .login-error {
+      display: none;
+      text-align: center;
+      color: var(--red);
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    /* ================= APP ================= */
+
+    #appPage {
+      display: none;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    .navbar {
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 25px;
+
+      background: rgba(8, 13, 25, .94);
+      backdrop-filter: blur(15px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: bold;
+
+      background: linear-gradient(90deg,
+          var(--primary),
+          var(--secondary));
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 5px;
+      list-style: none;
+    }
+
+    .nav-links button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .nav-links button:hover,
+    .nav-links button.active {
+      color: white;
+      background: rgba(108, 99, 255, .18);
+    }
+
+    .logout {
+      border: 1px solid rgba(255, 107, 107, .35);
+      background: rgba(255, 107, 107, .10);
+      color: var(--red);
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* ================= CONTENT ================= */
+
+    .container {
+      width: 92%;
+      max-width: 1300px;
+      margin: 30px auto;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    .hero {
+      padding: 35px;
+      border-radius: 22px;
+
+      background:
+        linear-gradient(135deg,
+          rgba(108, 99, 255, .20),
+          rgba(0, 212, 255, .12));
+
+      border: 1px solid var(--border);
+
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: var(--muted);
+    }
+
+    /* ================= CARDS ================= */
+
+    .cards {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .card:hover {
+      border-color: var(--secondary);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ================= STUDENT INFO ================= */
+
+    .student-info {
+      margin-top: 25px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+      gap: 15px;
+    }
+
+    .info-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .info-box small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .info-box strong {
+      color: white;
+    }
+
+    /* ================= SECTION TITLE ================= */
+
+    .section-title {
+      margin-bottom: 20px;
+    }
+
+    .section-title h2 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    /* ================= TIMETABLE ================= */
+
+    .table-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th {
+      padding: 13px 8px;
+      background: #172238;
+      color: var(--secondary);
+      border: 1px solid rgba(255, 255, 255, .06);
+      font-size: 12px;
+    }
+
+    td {
+      padding: 11px 7px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, .05);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    td:first-child {
+      color: var(--yellow);
+    }
+
+    .sub-dsp {
+      background: #17385e;
+      color: #8ec8ff
+    }
+
+    .sub-tlrf {
+      background: #4c3018;
+      color: #ffbd7d
+    }
+
+    .sub-mpmc {
+      background: #43265e;
+      color: #d5a2ff
+    }
+
+    .sub-dc {
+      background: #5a2028;
+      color: #ff9b9b
+    }
+
+    .sub-pe {
+      background: #5a2144;
+      color: #ff9bd0
+    }
+
+    .sub-oe {
+      background: #164b32;
+      color: #7ff0ad
+    }
+
+    .sub-lab {
+      background: #124c4b;
+      color: #69eee7
+    }
+
+    .sub-break {
+      background: #242b37;
+      color: #858e9d
+    }
+
+    .sub-lunch {
+      background: #242b37;
+      color: #858e9d
+    }
+
+    /* ================= EXAM ================= */
+
+    .exam-table {
+      min-width: 900px;
+    }
+
+    .exam-table th {
+      background: linear-gradient(135deg,
+          rgba(255, 107, 157, .20),
+          rgba(108, 99, 255, .15));
+    }
+
+    .exam-date {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .exam-code {
+      color: var(--yellow);
+      font-family: monospace;
+    }
+
+    .fn {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .an {
+      color: var(--pink);
+      font-weight: bold;
+    }
+
+    /* ================= PROJECT ================= */
+
+    .project-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      color: var(--secondary);
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+      gap: 15px;
+    }
+
+    .member {
+      background: var(--card2);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: linear-gradient(135deg,
+          var(--primary),
+          var(--secondary));
+
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .member h3 {
+      margin-bottom: 10px;
+    }
+
+    .member p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ================= EDIT ================= */
+
+    .edit-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 18px;
+    }
+
+    .edit-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .edit-card.full {
+      grid-column: 1/-1;
+    }
+
+    .edit-card h3 {
+      margin-bottom: 20px;
+      color: var(--secondary);
+    }
+
+    .edit-input {
+      margin-bottom: 15px;
+    }
+
+    .edit-input label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .edit-input input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 9px;
+
+      background: #0a1220;
+      color: white;
+
+      border: 1px solid #30415e;
+      outline: none;
+    }
+
+    .edit-input input:focus {
+      border-color: var(--secondary);
+    }
+
+    .save-button {
+      padding: 13px 22px;
+      border: 0;
+      border-radius: 9px;
+
+      background: linear-gradient(135deg,
+          var(--green),
+          var(--secondary));
+
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .success {
+      color: var(--green);
+      margin-left: 12px;
+      font-size: 13px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    /* ================= CLOCK ================= */
+
+    .nav-clock {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      background: rgba(0, 212, 255, .07);
+      border: 1px solid rgba(0, 212, 255, .22);
+      border-radius: 10px;
+      padding: 7px 14px;
+      line-height: 1.4;
+      min-width: 140px;
+    }
+
+    .nav-clock .time {
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00d4ff;
+      letter-spacing: 2px;
+    }
+
+    .nav-clock .date-str {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-clock {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .hclock-box {
+      background: rgba(0, 0, 0, .25);
+      border: 1px solid rgba(0, 212, 255, .2);
+      border-radius: 14px;
+      padding: 16px 22px;
+      min-width: 160px;
+    }
+
+    .hclock-box .hc-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .hclock-box .hc-val {
+      font-family: monospace;
+      font-size: 28px;
+      font-weight: bold;
+      color: #00d4ff;
+      letter-spacing: 3px;
+    }
+
+    .hclock-box .hc-val.date-val {
+      font-size: 16px;
+      color: #ffd166;
+      letter-spacing: 1px;
+      line-height: 1.5;
+    }
+
+    .greeting-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(108, 99, 255, .35), rgba(0, 212, 255, .2));
+      border: 1px solid rgba(0, 212, 255, .25);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 13px;
+      color: #00d4ff;
+      font-weight: bold;
+      margin-bottom: 12px;
+      letter-spacing: .5px;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:850px) {
+
+      .navbar {
+        height: auto;
+        padding: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .edit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .edit-card.full {
+        grid-column: auto;
+      }
+
+      .hero h1 {
+        font-size: 27px;
+      }
+
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300 antialiased selection:bg-indigo-500 selection:text-white">
-
-    <!-- Header / Navigation Bar -->
-    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800/80 px-4 lg:px-8 py-3 transition-all">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 text-white font-extrabold text-xl tracking-wider">
-                    CP
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">CampusPulse</h1>
-                    <p class="text-xs text-slate-400 font-medium">Student Life Companion</p>
-                </div>
-            </div>
-
-            <!-- Quick Navigation Tabs -->
-            <nav class="hidden md:flex items-center gap-1 bg-slate-800/60 p-1 rounded-xl border border-slate-700/50">
-                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-chart-pie text-indigo-400"></i> Dashboard
-                </button>
-                <button onclick="switchTab('timetable')" id="nav-timetable" class="nav-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-calendar-days text-purple-400"></i> Class Timetable
-                </button>
-                <button onclick="switchTab('exams')" id="nav-exams" class="nav-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-pen-ruler text-pink-400"></i> Exams
-                </button>
-                <button onclick="switchTab('attendance')" id="nav-attendance" class="nav-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-user-check text-emerald-400"></i> Attendance
-                </button>
-                <button onclick="switchTab('batchmates')" id="nav-batchmates" class="nav-btn flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-user-group text-amber-400"></i> Batchmates
-                </button>
-            </nav>
-
-            <!-- Actions & Theme Toggle -->
-            <div class="flex items-center gap-2">
-                <!-- Theme Palette Selector -->
-                <div class="relative group">
-                    <button class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 transition-all flex items-center gap-2" title="Change Theme">
-                        <i class="fa-solid fa-palette text-pink-400"></i>
-                    </button>
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-2 hidden group-hover:block z-50 animate-fade-in">
-                        <p class="text-xs font-semibold text-slate-400 px-2 py-1 uppercase tracking-wider">Themes</p>
-                        <button onclick="setTheme('neon')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500"></span> Neon Dark (Default)
-                        </button>
-                        <button onclick="setTheme('sunset')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-rose-500"></span> Cyber Sunset
-                        </button>
-                        <button onclick="setTheme('ocean')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500"></span> Ocean Teal
-                        </button>
-                        <button onclick="setTheme('emerald')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></span> Mint Emerald
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Export / Import Data -->
-                <button onclick="exportData()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 transition-all" title="Backup Data (JSON)">
-                    <i class="fa-solid fa-download text-indigo-400"></i>
-                </button>
-                <button onclick="document.getElementById('import-file-input').click()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 transition-all" title="Restore Data">
-                    <i class="fa-solid fa-upload text-purple-400"></i>
-                </button>
-                <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importData(event)">
-            </div>
-        </div>
-
-        <!-- Mobile Bottom Nav -->
-        <div class="md:hidden flex items-center justify-around mt-3 pt-2 border-t border-slate-800/80 text-xs">
-            <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-indigo-400 font-medium">
-                <i class="fa-solid fa-chart-pie text-base"></i> Home
-            </button>
-            <button onclick="switchTab('timetable')" id="mob-nav-timetable" class="flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-purple-400 font-medium">
-                <i class="fa-solid fa-calendar-days text-base"></i> Timetable
-            </button>
-            <button onclick="switchTab('exams')" id="mob-nav-exams" class="flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-pink-400 font-medium">
-                <i class="fa-solid fa-pen-ruler text-base"></i> Exams
-            </button>
-            <button onclick="switchTab('attendance')" id="mob-nav-attendance" class="flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-emerald-400 font-medium">
-                <i class="fa-solid fa-user-check text-base"></i> Attendance
-            </button>
-            <button onclick="switchTab('batchmates')" id="mob-nav-batchmates" class="flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-amber-400 font-medium">
-                <i class="fa-solid fa-user-group text-base"></i> Batchmates
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Workspace Container -->
-    <main class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-6 flex-1 space-y-6">
-
-        <!-- ==================== TAB 1: DASHBOARD ==================== -->
-        <section id="tab-dashboard" class="tab-content space-y-6">
-            <!-- Welcome Header Card -->
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900/90 via-purple-900/70 to-slate-900 border border-indigo-500/20 p-6 lg:p-8 shadow-2xl">
-                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="absolute right-32 -top-10 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-3">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Semester Active
-                        </div>
-                        <h2 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                            Welcome back, <span id="greeting-name" class="bg-gradient-to-r from-indigo-300 to-pink-300 bg-clip-text text-transparent">Student</span>! 👋
-                        </h2>
-                        <p class="text-slate-300 text-sm mt-1 max-w-xl">
-                            Stay on top of your classes, upcoming exams, project attendance, and batchmate contacts all in one place.
-                        </p>
-                    </div>
-
-                    <div class="flex items-center gap-4 bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 backdrop-blur">
-                        <div class="text-center px-2">
-                            <p class="text-xs text-slate-400 uppercase font-bold tracking-wider" id="dash-current-day">TODAY</p>
-                            <p class="text-xl font-extrabold text-white" id="dash-current-date">-- --</p>
-                        </div>
-                        <div class="h-8 w-px bg-slate-700"></div>
-                        <div class="text-center px-2">
-                            <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">TIME</p>
-                            <p class="text-xl font-extrabold text-indigo-400" id="dash-clock">00:00</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Stat 1: Overall Attendance -->
-                <div onclick="switchTab('attendance')" class="cursor-pointer group bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 p-5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:border-emerald-500/40">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Avg Attendance</span>
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="stat-attendance-pct" class="text-3xl font-extrabold text-white">0%</h3>
-                        <span id="stat-attendance-status" class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300">Target 75%</span>
-                    </div>
-                    <div class="w-full bg-slate-700/50 h-2 rounded-full mt-3 overflow-hidden">
-                        <div id="stat-attendance-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <!-- Stat 2: Today's Classes -->
-                <div onclick="switchTab('timetable')" class="cursor-pointer group bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 p-5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:border-purple-500/40">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Today's Classes</span>
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-clock"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="stat-today-classes" class="text-3xl font-extrabold text-white">0</h3>
-                        <span class="text-xs text-slate-400" id="stat-today-name">--</span>
-                    </div>
-                    <p class="text-xs text-slate-400 mt-3 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-info text-purple-400"></i> View full weekly schedule
-                    </p>
-                </div>
-
-                <!-- Stat 3: Next Exam Countdown -->
-                <div onclick="switchTab('exams')" class="cursor-pointer group bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 p-5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:border-pink-500/40">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Next Exam</span>
-                        <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-hourglass-half"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="stat-next-exam-days" class="text-3xl font-extrabold text-white">--</h3>
-                        <span id="stat-next-exam-name" class="text-xs font-semibold text-pink-300 truncate max-w-[100px]">None</span>
-                    </div>
-                    <p class="text-xs text-slate-400 mt-3" id="stat-next-exam-date">No upcoming exams</p>
-                </div>
-
-                <!-- Stat 4: Total Batchmates -->
-                <div onclick="switchTab('batchmates')" class="cursor-pointer group bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 p-5 rounded-2xl transition-all duration-300 hover:shadow-xl hover:border-amber-500/40">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Batchmates</span>
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                    </div>
-                    <div class="flex items-baseline justify-between">
-                        <h3 id="stat-batchmates-count" class="text-3xl font-extrabold text-white">0</h3>
-                        <span class="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full font-bold">Contacts</span>
-                    </div>
-                    <p class="text-xs text-slate-400 mt-3 flex items-center gap-1">
-                        <i class="fa-solid fa-user-group text-amber-400"></i> Project partners & friends
-                    </p>
-                </div>
-            </div>
-
-            <!-- Two Column Section: Today's Schedule & Attendance Quick Overview -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Today's Live Schedule -->
-                <div class="lg:col-span-2 bg-slate-800/40 border border-slate-700/60 rounded-3xl p-6 shadow-xl">
-                    <div class="flex items-center justify-between mb-5">
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-day text-indigo-400"></i> Today's Schedule Overview
-                        </h3>
-                        <button onclick="switchTab('timetable')" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
-                            Full Timetable <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-
-                    <div id="dash-schedule-list" class="space-y-3">
-                        <!-- Dynamic schedule items will render here -->
-                    </div>
-                </div>
-
-                <!-- Quick Exam Radar / Quick Actions -->
-                <div class="bg-slate-800/40 border border-slate-700/60 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-bolt text-amber-400"></i> Quick Actions
-                        </h3>
-
-                        <div class="space-y-3">
-                            <button onclick="openTimetableModal()" class="w-full text-left p-3.5 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 hover:bg-indigo-600/30 transition-all flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow group-hover:scale-105 transition-transform">
-                                    <i class="fa-solid fa-plus"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Add New Class Slot</p>
-                                    <p class="text-xs text-indigo-300">Update subject, time or room</p>
-                                </div>
-                            </button>
-
-                            <button onclick="openTimetablePicModal()" class="w-full text-left p-3.5 rounded-2xl bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/30 transition-all flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-base shadow group-hover:scale-105 transition-transform">
-                                    <i class="fa-solid fa-image"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Upload Timetable Image</p>
-                                    <p class="text-xs text-purple-300">View physical photo copy anytime</p>
-                                </div>
-                            </button>
-
-                            <button onclick="openExamModal()" class="w-full text-left p-3.5 rounded-2xl bg-pink-600/20 border border-pink-500/30 hover:bg-pink-600/30 transition-all flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-xl bg-pink-600 text-white flex items-center justify-center font-bold text-base shadow group-hover:scale-105 transition-transform">
-                                    <i class="fa-solid fa-pen-nib"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Add Exam Schedule</p>
-                                    <p class="text-xs text-pink-300">Set date, time & venue</p>
-                                </div>
-                            </button>
-
-                            <button onclick="openBatchmateModal()" class="w-full text-left p-3.5 rounded-2xl bg-amber-600/20 border border-amber-500/30 hover:bg-amber-600/30 transition-all flex items-center gap-3 group">
-                                <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-base shadow group-hover:scale-105 transition-transform">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Add Batchmate</p>
-                                    <p class="text-xs text-amber-300">Save project teammate details</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Motivational Quote Card -->
-                    <div class="mt-6 p-4 rounded-2xl bg-slate-900/60 border border-slate-700/50 text-xs italic text-slate-300 flex items-start gap-3">
-                        <i class="fa-solid fa-quote-left text-indigo-400 text-lg"></i>
-                        <div>
-                            <p id="daily-quote">"Success is the sum of small efforts, repeated day in and day out."</p>
-                            <p class="text-[10px] text-slate-400 uppercase font-bold mt-1 font-sans">— Robert Collier</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
-        <!-- ==================== TAB 2: CLASS TIMETABLE ==================== -->
-        <section id="tab-timetable" class="tab-content hidden space-y-6">
-            <!-- Timetable Top Control Bar -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-800/50 border border-slate-700/60 p-5 rounded-3xl">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-days text-purple-400"></i> Weekly Class Schedule
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Manage, modify, or customize your classes for each day of the week.</p>
-                </div>
-
-                <div class="flex flex-wrap items-center gap-3">
-                    <button onclick="openTimetablePicModal()" class="px-4 py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 text-xs font-bold transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-image"></i> View / Change Timetable Pic
-                    </button>
-
-                    <button onclick="openTimetableModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Add Class Slot
-                    </button>
-                </div>
-            </div>
-
-            <!-- Day Selector Tabs -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="day-tabs-container">
-                <button onclick="selectTimetableDay('Monday')" class="day-tab active px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Monday
-                </button>
-                <button onclick="selectTimetableDay('Tuesday')" class="day-tab px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Tuesday
-                </button>
-                <button onclick="selectTimetableDay('Wednesday')" class="day-tab px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Wednesday
-                </button>
-                <button onclick="selectTimetableDay('Thursday')" class="day-tab px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Thursday
-                </button>
-                <button onclick="selectTimetableDay('Friday')" class="day-tab px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Friday
-                </button>
-                <button onclick="selectTimetableDay('Saturday')" class="day-tab px-5 py-2.5 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 whitespace-nowrap">
-                    Saturday
-                </button>
-            </div>
-
-            <!-- Selected Day Class Slots Grid -->
-            <div id="timetable-slots-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Dynamic timetable cards will render here -->
-            </div>
-
-            <!-- Full Week View Grid Accordion/Table -->
-            <div class="bg-slate-800/40 border border-slate-700/60 rounded-3xl p-6 shadow-xl mt-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-table-cells text-indigo-400"></i> Full Week Master Grid View
-                    </h3>
-                    <span class="text-xs text-slate-400">All 6 Days Summary</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-700/80 text-slate-400 uppercase tracking-wider font-bold">
-                                <th class="p-3 w-28">Day</th>
-                                <th class="p-3">Classes Scheduled</th>
-                            </tr>
-                        </thead>
-                        <tbody id="master-grid-tbody" class="divide-y divide-slate-800">
-                            <!-- Dynamic row contents -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+<body>
 
 
-        <!-- ==================== TAB 3: EXAM TIMETABLE ==================== -->
-        <section id="tab-exams" class="tab-content hidden space-y-6">
-            <!-- Exam Header -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-800/50 border border-slate-700/60 p-5 rounded-3xl">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-pen-ruler text-pink-400"></i> Exam Timetable & Schedule
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Track dates, venues, time slots, and countdowns for midterms and finals.</p>
-                </div>
+  <!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
 
-                <button onclick="openExamModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white text-xs font-bold shadow-lg shadow-pink-600/25 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Add New Exam
-                </button>
-            </div>
+  <div id="loginPage">
 
-            <!-- Exam List Grid -->
-            <div id="exams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Dynamic Exam Cards -->
-            </div>
-        </section>
+    <div class="login-box">
 
+      <div class="logo">
+        CP
+      </div>
 
-        <!-- ==================== TAB 4: ATTENDANCE TRACKER ==================== -->
-        <section id="tab-attendance" class="tab-content hidden space-y-6">
-            <!-- Header -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-800/50 border border-slate-700/60 p-5 rounded-3xl">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-user-check text-emerald-400"></i> Project & Subject Attendance Tracker
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Monitor class presence, calculate 75% target threshold, and avoid attendance shortages.</p>
-                </div>
+      <h1>CampusPulse</h1>
 
-                <button onclick="openAttendanceModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/25 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Add Subject / Project
-                </button>
-            </div>
+      <p class="college">
+        Vel Tech High Tech Dr. Rangarajan
+        Dr. Sakunthala Engineering College
+      </p>
 
-            <!-- Attendance Summary & Chart Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Chart Card -->
-                <div class="bg-slate-800/40 border border-slate-700/60 rounded-3xl p-6 shadow-xl flex flex-col items-center justify-center">
-                    <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 text-center">Attendance Distribution</h3>
-                    <div class="w-full max-w-[240px] h-[240px] relative flex items-center justify-center">
-                        <canvas id="attendanceChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Subject Wise Attendance Cards -->
-                <div class="lg:col-span-2 space-y-4" id="attendance-list-container">
-                    <!-- Dynamic attendance items -->
-                </div>
-            </div>
-        </section>
+      <h2>Student Login</h2>
 
 
-        <!-- ==================== TAB 5: BATCHMATES DIRECTORY ==================== -->
-        <section id="tab-batchmates" class="tab-content hidden space-y-6">
-            <!-- Header -->
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-800/50 border border-slate-700/60 p-5 rounded-3xl">
-                <div>
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-user-group text-amber-400"></i> Batchmate & Project Partner Directory
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Store contact info, project roles, roll numbers, and notes for your classmates.</p>
-                </div>
+      <div class="form-group">
 
-                <button onclick="openBatchmateModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold shadow-lg shadow-amber-600/25 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus"></i> Add Batchmate
-                </button>
-            </div>
+        <label>
+          VH Number
+        </label>
 
-            <!-- Search and Filter Bar -->
-            <div class="flex flex-col sm:flex-row items-center gap-3">
-                <div class="relative flex-1 w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="batchmate-search" oninput="filterBatchmates()" placeholder="Search by name, project, phone or roll number..." class="w-full pl-11 pr-4 py-3 rounded-2xl bg-slate-800/60 border border-slate-700/60 text-sm text-white focus:outline-none focus:border-amber-500/60 transition-all">
-                </div>
-            </div>
+        <input id="loginId" type="text" placeholder="Enter VH Number">
 
-            <!-- Batchmates Grid -->
-            <div id="batchmates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Dynamic Batchmate Cards -->
-            </div>
-        </section>
-
-    </main>
+      </div>
 
 
-    <!-- ==================== MODALS ==================== -->
+      <div class="form-group">
 
-    <!-- MODAL 1: ADD / EDIT TIMETABLE SLOT -->
-    <div id="modal-timetable" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg shadow-2xl p-6 relative animate-scale-up">
-            <button onclick="closeModal('modal-timetable')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 id="modal-timetable-title" class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-calendar-plus text-indigo-400"></i> Add Class Slot
-            </h3>
+        <label>
+          Password
+        </label>
 
-            <form id="form-timetable" onsubmit="saveTimetableSlot(event)" class="space-y-4">
-                <input type="hidden" id="tt-id">
+        <input id="loginPassword" type="password" placeholder="Enter Password">
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Day of the Week</label>
-                    <select id="tt-day" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
-                    </select>
-                </div>
+      </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Start Time</label>
-                        <input type="time" id="tt-start-time" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">End Time</label>
-                        <input type="time" id="tt-end-time" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Subject Name</label>
-                    <input type="text" id="tt-subject" required placeholder="e.g. Data Structures & Algorithms" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                </div>
+      <button class="login-button" onclick="login()">
+        LOGIN
+      </button>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Room / Lab No.</label>
-                        <input type="text" id="tt-room" placeholder="e.g. Lab 302 or LH-1" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Faculty / Professor</label>
-                        <input type="text" id="tt-teacher" placeholder="e.g. Dr. Sharma" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Card Color Theme</label>
-                    <div class="flex items-center gap-3">
-                        <label class="cursor-pointer flex items-center gap-1.5">
-                            <input type="radio" name="tt-color" value="indigo" checked class="accent-indigo-500">
-                            <span class="w-4 h-4 rounded-full bg-indigo-500 inline-block"></span> Indigo
-                        </label>
-                        <label class="cursor-pointer flex items-center gap-1.5">
-                            <input type="radio" name="tt-color" value="purple" class="accent-purple-500">
-                            <span class="w-4 h-4 rounded-full bg-purple-500 inline-block"></span> Purple
-                        </label>
-                        <label class="cursor-pointer flex items-center gap-1.5">
-                            <input type="radio" name="tt-color" value="pink" class="accent-pink-500">
-                            <span class="w-4 h-4 rounded-full bg-pink-500 inline-block"></span> Pink
-                        </label>
-                        <label class="cursor-pointer flex items-center gap-1.5">
-                            <input type="radio" name="tt-color" value="emerald" class="accent-emerald-500">
-                            <span class="w-4 h-4 rounded-full bg-emerald-500 inline-block"></span> Emerald
-                        </label>
-                        <label class="cursor-pointer flex items-center gap-1.5">
-                            <input type="radio" name="tt-color" value="amber" class="accent-amber-500">
-                            <span class="w-4 h-4 rounded-full bg-amber-500 inline-block"></span> Amber
-                        </label>
-                    </div>
-                </div>
+      <div id="loginError" class="login-error">
+        ❌ Invalid VH Number or Password
+      </div>
 
-                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
-                    <button type="button" onclick="closeModal('modal-timetable')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30">Save Slot</button>
-                </div>
-            </form>
-        </div>
     </div>
 
+  </div>
 
-    <!-- MODAL 2: UPLOAD & VIEW TIMETABLE IMAGE -->
-    <div id="modal-timetable-pic" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-3xl shadow-2xl p-6 relative max-h-[90vh] flex flex-col animate-scale-up">
-            <button onclick="closeModal('modal-timetable-pic')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                <i class="fa-solid fa-image text-purple-400"></i> Timetable Image Attachment
-            </h3>
-            <p class="text-xs text-slate-400 mb-4">Upload your official college timetable picture to view or replace anytime.</p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
-                <input type="file" id="tt-image-input" accept="image/*" class="text-xs text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-500 cursor-pointer">
-                <div class="flex gap-2">
-                    <button onclick="removeTimetablePic()" class="px-3 py-1.5 rounded-xl bg-rose-600/20 text-rose-300 hover:bg-rose-600/30 text-xs font-semibold">Remove Pic</button>
-                </div>
+
+  <!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+  <div id="appPage">
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+      <div class="brand">
+        CampusPulse
+      </div>
+
+
+      <ul class="nav-links">
+
+        <li>
+          <button id="navHome" class="active" onclick="showPage('home',this)">
+            🏠 Dashboard
+          </button>
+        </li>
+
+        <li>
+          <button onclick="showPage('timetable',this)">
+            📅 Time Table
+          </button>
+        </li>
+
+        <li>
+          <button onclick="showPage('exams',this)">
+            📝 Exam Time Table
+          </button>
+        </li>
+
+        <li>
+          <button onclick="showPage('project',this)">
+            👥 Batch Details
+          </button>
+        </li>
+
+        <li>
+          <button onclick="showPage('edit',this)">
+            ⚙️ Edit Details
+          </button>
+        </li>
+
+      </ul>
+
+      <div style="display:flex;align-items:center;gap:10px">
+
+        <div class="nav-clock">
+          <span class="time" id="navTime">00:00:00</span>
+          <span class="date-str" id="navDate">Loading...</span>
+        </div>
+
+        <button class="logout" onclick="logout()">
+          Logout
+        </button>
+
+      </div>
+
+    </nav>
+
+
+
+    <div class="container">
+
+
+      <!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+      <section id="home" class="page-section active">
+
+
+        <div class="hero">
+
+          <div class="greeting-tag" id="greetingTag">🌅 Good Morning</div>
+
+          <h1 id="welcomeText">
+            Welcome, MOHANRAJ V!
+          </h1>
+
+          <p>
+            Student Academic Dashboard
+            • ECE • III/V • Section B
+          </p>
+
+          <div class="hero-clock">
+
+            <div class="hclock-box">
+              <div class="hc-label">⏰ Live Time</div>
+              <div class="hc-val" id="heroTime">00:00:00</div>
             </div>
 
-            <!-- Image View Box -->
-            <div class="flex-1 overflow-auto bg-slate-950 rounded-2xl border border-slate-800 p-2 flex items-center justify-center min-h-[300px]">
-                <img id="tt-image-preview" src="" alt="Timetable Picture" class="max-w-full max-h-[60vh] object-contain rounded-xl hidden">
-                <div id="tt-image-placeholder" class="text-center p-8">
-                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-purple-400/50 mb-3"></i>
-                    <p class="text-sm font-semibold text-slate-300">No timetable image uploaded yet</p>
-                    <p class="text-xs text-slate-500 mt-1">Select an image file above to attach your timetable picture.</p>
-                </div>
+            <div class="hclock-box">
+              <div class="hc-label">📅 Today's Date</div>
+              <div class="hc-val date-val" id="heroDate">Loading...</div>
             </div>
+
+            <div class="hclock-box">
+              <div class="hc-label">📆 Day</div>
+              <div class="hc-val date-val" id="heroDay">Loading...</div>
+            </div>
+
+          </div>
+
         </div>
-    </div>
 
 
-    <!-- MODAL 3: ADD / EDIT EXAM -->
-    <div id="modal-exam" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg shadow-2xl p-6 relative animate-scale-up">
-            <button onclick="closeModal('modal-exam')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 id="modal-exam-title" class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-pen-ruler text-pink-400"></i> Add Exam Entry
+
+        <div class="cards">
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              📅
+            </div>
+
+            <h3>
+              Class Time Table
             </h3>
 
-            <form id="form-exam" onsubmit="saveExam(event)" class="space-y-4">
-                <input type="hidden" id="exam-id">
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Subject / Module Name</label>
-                    <input type="text" id="exam-subject" required placeholder="e.g. Database Management Systems" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Exam Date</label>
-                        <input type="date" id="exam-date" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Exam Time</label>
-                        <input type="time" id="exam-time" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Venue / Hall</label>
-                        <input type="text" id="exam-venue" placeholder="e.g. Block-B Room 104" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Exam Type</label>
-                        <select id="exam-type" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500">
-                            <option value="Midterm">Midterm</option>
-                            <option value="Final EndSem">Final EndSem</option>
-                            <option value="Practical/Lab">Practical / Lab Exam</option>
-                            <option value="Quiz / Test">Quiz / Class Test</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notes / Syllabus Topics</label>
-                    <textarea id="exam-notes" rows="2" placeholder="e.g. Units 1 to 4, SQL queries & Normalization" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-500"></textarea>
-                </div>
-
-                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
-                    <button type="button" onclick="closeModal('modal-exam')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-600/30">Save Exam</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- MODAL 4: ADD / EDIT ATTENDANCE -->
-    <div id="modal-attendance" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg shadow-2xl p-6 relative animate-scale-up">
-            <button onclick="closeModal('modal-attendance')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 id="modal-attendance-title" class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-user-check text-emerald-400"></i> Add Subject / Project Attendance
-            </h3>
-
-            <form id="form-attendance" onsubmit="saveAttendance(event)" class="space-y-4">
-                <input type="hidden" id="att-id">
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Subject or Project Name</label>
-                    <input type="text" id="att-name" required placeholder="e.g. Capstone Web Project or Mathematics III" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
-                    <select id="att-category" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500">
-                        <option value="Project">Project Work</option>
-                        <option value="Theory Class">Theory Class</option>
-                        <option value="Lab Practical">Lab Practical</option>
-                        <option value="Seminar / Elective">Seminar / Elective</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Classes Attended</label>
-                        <input type="number" id="att-attended" min="0" required value="0" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Total Classes Conducted</label>
-                        <input type="number" id="att-total" min="1" required value="1" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-emerald-500">
-                    </div>
-                </div>
-
-                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
-                    <button type="button" onclick="closeModal('modal-attendance')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/30">Save Tracker</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- MODAL 5: ADD / EDIT BATCHMATE -->
-    <div id="modal-batchmate" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg shadow-2xl p-6 relative animate-scale-up">
-            <button onclick="closeModal('modal-batchmate')" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 id="modal-batchmate-title" class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-user-plus text-amber-400"></i> Add Batchmate / Project Mate
-            </h3>
-
-            <form id="form-batchmate" onsubmit="saveBatchmate(event)" class="space-y-4">
-                <input type="hidden" id="bm-id">
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="bm-name" required placeholder="e.g. Rahul Verma" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Roll / ID Number</label>
-                        <input type="text" id="bm-roll" placeholder="e.g. 21CS045" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Project Role / Group</label>
-                        <input type="text" id="bm-role" placeholder="e.g. Frontend Lead / Team A" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Phone Number</label>
-                        <input type="tel" id="bm-phone" placeholder="e.g. +91 9876543210" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
-                        <input type="email" id="bm-email" placeholder="e.g. rahul@college.edu" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Notes / Skills</label>
-                    <textarea id="bm-notes" rows="2" placeholder="e.g. Expert in React.js, handles Backend API" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
-                </div>
-
-                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
-                    <button type="button" onclick="closeModal('modal-batchmate')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-lg shadow-amber-600/30">Save Contact</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <!-- Footer -->
-    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© 2026 CampusPulse Student Dashboard. Built for College Life Excellence.</p>
-            <p class="flex items-center gap-2">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> Live Data Sync Active
+            <p>
+              View the ECE III/V
+              2026–2027 odd semester
+              class timetable.
             </p>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              📝
+            </div>
+
+            <h3>
+              Exam Schedule
+            </h3>
+
+            <p>
+              View semester examination
+              dates and sessions.
+            </p>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              👥
+            </div>
+
+            <h3>
+              Mini Project
+            </h3>
+
+            <p>
+              View your project title
+              and batch member details.
+            </p>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              ⚙️
+            </div>
+
+            <h3>
+              Edit Details
+            </h3>
+
+            <p>
+              Update your personal and
+              project information without
+              reloading the page.
+            </p>
+
+          </div>
+
         </div>
+
+
+
+        <!-- STUDENT INFORMATION -->
+
+        <div class="student-info">
+
+
+          <div class="info-box">
+
+            <small>
+              Student Name
+            </small>
+
+            <strong id="homeName">
+              MOHANRAJ V
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              VH Number
+            </small>
+
+            <strong id="homeVH">
+              14281
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Department
+            </small>
+
+            <strong id="homeDept">
+              ECE
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Semester
+            </small>
+
+            <strong id="homeSem">
+              III/V
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Section
+            </small>
+
+            <strong id="homeSec">
+              B
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Hall
+            </small>
+
+            <strong id="homeHall">
+              H304
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Phone
+            </small>
+
+            <strong id="homePhone">
+              9790490878
+            </strong>
+
+          </div>
+
+
+          <div class="info-box">
+
+            <small>
+              Email
+            </small>
+
+            <strong id="homeEmail">
+              vh14281@velhightech.com
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+     TIME TABLE
+===================================================== -->
+
+      <section id="timetable" class="page-section">
+
+
+        <div class="section-title">
+
+          <h2>
+            📅 Class Time Table
+          </h2>
+
+          <p>
+            III Year / V Semester • Section B
+            • Hall H304 • 2026–2027 Odd Semester
+          </p>
+
+        </div>
+
+
+        <div class="table-box">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Day
+                </th>
+
+                <th>
+                  8:15–9:05
+                </th>
+
+                <th>
+                  9:05–9:55
+                </th>
+
+                <th>
+                  9:55–10:10
+                </th>
+
+                <th>
+                  10:10–11:00
+                </th>
+
+                <th>
+                  11:00–11:50
+                </th>
+
+                <th>
+                  11:50–12:35
+                </th>
+
+                <th>
+                  12:35–1:15
+                </th>
+
+                <th>
+                  1:15–2:00
+                </th>
+
+                <th>
+                  2:00–2:45
+                </th>
+
+                <th>
+                  2:45–3:30
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+              <tr>
+
+                <td>MON</td>
+
+                <td class="sub-dsp">
+                  DSP
+                </td>
+
+                <td class="sub-dsp">
+                  DSP
+                </td>
+
+                <td class="sub-break">
+                  BREAK
+                </td>
+
+                <td class="sub-tlrf">
+                  TLRF
+                </td>
+
+                <td class="sub-mpmc">
+                  MPMC
+                </td>
+
+                <td class="sub-lab">
+                  CS/DSP LAB
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-lab" colspan="3">
+                  CS/DSP LAB
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>TUE</td>
+
+                <td class="sub-oe" colspan="2">
+                  OE I
+                </td>
+
+                <td class="sub-break">
+                  BREAK
+                </td>
+
+                <td class="sub-dsp">
+                  DSP
+                </td>
+
+                <td class="sub-pe">
+                  PE I
+                </td>
+
+                <td class="sub-lab">
+                  DC
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-tlrf">
+                  TLRF
+                </td>
+
+                <td class="sub-lab">
+                  DC
+                </td>
+
+                <td>
+                  LIB/SPORTS
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>WED</td>
+
+                <td class="sub-tlrf">
+                  TLRF
+                </td>
+
+                <td class="sub-mpmc">
+                  MPMC
+                </td>
+
+                <td class="sub-break">
+                  BREAK
+                </td>
+
+                <td class="sub-pe">
+                  PE I
+                </td>
+
+                <td class="sub-lab">
+                  DC
+                </td>
+
+                <td class="sub-lab">
+                  CS/DSP LAB
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-lab" colspan="3">
+                  CS/DSP LAB
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>THU</td>
+
+                <td class="sub-oe" colspan="2">
+                  OE I
+                </td>
+
+                <td class="sub-break">
+                  BREAK
+                </td>
+
+                <td class="sub-lab">
+                  DC
+                </td>
+
+                <td class="sub-pe">
+                  PE I
+                </td>
+
+                <td class="sub-mpmc">
+                  MPMC
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-tlrf">
+                  TLRF
+                </td>
+
+                <td class="sub-dsp">
+                  DSP
+                </td>
+
+                <td class="sub-dsp">
+                  DSP
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>FRI</td>
+
+                <td class="sub-mpmc" colspan="3">
+                  MPMC LAB
+                </td>
+
+                <td class="sub-mpmc">
+                  MPMC LAB
+                </td>
+
+                <td class="sub-pe">
+                  PE I
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-lunch">
+                  LUNCH
+                </td>
+
+                <td class="sub-mpmc" colspan="3">
+                  MINI PROJECT - II
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+     EXAM TIMETABLE
+===================================================== -->
+
+      <section id="exams" class="page-section">
+
+
+        <div class="section-title">
+
+          <h2>
+            📝 Examination Time Table
+          </h2>
+
+          <p>
+            ECE • Semester V • October 2026
+          </p>
+
+        </div>
+
+
+        <div class="table-box">
+
+          <table class="exam-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  S.No
+                </th>
+
+                <th>
+                  Department
+                </th>
+
+                <th>
+                  Course Code
+                </th>
+
+                <th>
+                  Course Title
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Session
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+              <tr>
+
+                <td>1</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC51T
+                </td>
+
+                <td>
+                  Digital Communication
+                </td>
+
+                <td class="exam-date">
+                  14.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>2</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC52T-26
+                </td>
+
+                <td>
+                  Digital Signal Processing
+                </td>
+
+                <td class="exam-date">
+                  15.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>3</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC53T-26
+                </td>
+
+                <td>
+                  Transmission Lines and RF Systems
+                </td>
+
+                <td class="exam-date">
+                  16.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>4</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21HE54IT
+                </td>
+
+                <td>
+                  Microprocessor and Microcontroller
+                </td>
+
+                <td class="exam-date">
+                  21.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>5</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC555PT
+                </td>
+
+                <td>
+                  Bio-Medical Instrumentation (PE-I)
+                </td>
+
+                <td class="exam-date">
+                  22.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>6</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC551PT
+                </td>
+
+                <td>
+                  Medical Electronics (PE-I)
+                </td>
+
+                <td class="exam-date">
+                  22.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>7</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21AI651PT
+                </td>
+
+                <td>
+                  Advanced Python Programming (OE-I)
+                </td>
+
+                <td class="exam-date">
+                  23.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>8</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21IT01OT
+                </td>
+
+                <td>
+                  Business Intelligence (OE-I)
+                </td>
+
+                <td class="exam-date">
+                  23.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>9</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21ME01OT
+                </td>
+
+                <td>
+                  Industry 4.0 (OE-I)
+                </td>
+
+                <td class="exam-date">
+                  23.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>10</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21AI31T
+                </td>
+
+                <td>
+                  Introduction to Artificial Intelligence (HC)
+                </td>
+
+                <td class="exam-date">
+                  24.10.2026
+                </td>
+
+                <td class="fn">
+                  FN
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>11</td>
+
+                <td>ECE</td>
+
+                <td class="exam-code">
+                  21EC02HT
+                </td>
+
+                <td>
+                  Machine Learning Techniques and Applications (HC)
+                </td>
+
+                <td class="exam-date">
+                  24.10.2026
+                </td>
+
+                <td class="an">
+                  AN
+                </td>
+
+              </tr>
+
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+     BATCH / PROJECT
+===================================================== -->
+
+      <section id="project" class="page-section">
+
+
+        <div class="section-title">
+
+          <h2>
+            👥 Batch Details
+          </h2>
+
+          <p>
+            Mini Project II • ECE III/V
+          </p>
+
+        </div>
+
+
+        <div class="project-box">
+
+
+          <div id="projectTitle" class="project-title">
+            Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading
+          </div>
+
+
+          <div class="member-grid">
+
+
+            <div class="member">
+
+              <div id="av1" class="avatar">
+                M
+              </div>
+
+              <h3 id="member1Name">
+                MOHANRAJ V
+              </h3>
+
+              <p>
+
+                VH No:
+                <strong id="member1VH">
+                  14281
+                </strong>
+
+                <br>
+
+                📞
+                <span id="member1Phone">
+                  9790490878
+                </span>
+
+                <br>
+
+                ✉️
+                <span id="member1Email">
+                  vh14281@velhightech.com
+                </span>
+
+              </p>
+
+            </div>
+
+
+
+            <div class="member">
+
+              <div id="av2" class="avatar">
+                A
+              </div>
+
+              <h3 id="member2Name">
+                ARJUN S
+              </h3>
+
+              <p>
+
+                VH No:
+                <strong id="member2VH">
+                  14282
+                </strong>
+
+                <br>
+
+                📞
+                <span id="member2Phone">
+                  9876543210
+                </span>
+
+                <br>
+
+                ✉️
+                <span id="member2Email">
+                  vh14282@velhightech.com
+                </span>
+
+              </p>
+
+            </div>
+
+
+
+            <div class="member">
+
+              <div id="av3" class="avatar">
+                K
+              </div>
+
+              <h3 id="member3Name">
+                KAVIYA R
+              </h3>
+
+              <p>
+
+                VH No:
+                <strong id="member3VH">
+                  14283
+                </strong>
+
+                <br>
+
+                📞
+                <span id="member3Phone">
+                  9123456789
+                </span>
+
+                <br>
+
+                ✉️
+                <span id="member3Email">
+                  vh14283@velhightech.com
+                </span>
+
+              </p>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+     EDIT DETAILS
+===================================================== -->
+
+      <section id="edit" class="page-section">
+
+
+        <div class="section-title">
+
+          <h2>
+            ⚙️ Edit Details
+          </h2>
+
+          <p>
+            Update information without reloading the page.
+          </p>
+
+        </div>
+
+
+        <div class="edit-grid">
+
+
+          <!-- STUDENT -->
+
+          <div class="edit-card">
+
+            <h3>
+              👤 Student Details
+            </h3>
+
+
+            <div class="edit-input">
+
+              <label>
+                Student Name
+              </label>
+
+              <input id="editName" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                VH Number
+              </label>
+
+              <input id="editVH" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Phone Number
+              </label>
+
+              <input id="editPhone" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Email
+              </label>
+
+              <input id="editEmail" type="email">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Department
+              </label>
+
+              <input id="editDept" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Semester
+              </label>
+
+              <input id="editSem" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Section
+              </label>
+
+              <input id="editSec" type="text">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Hall
+              </label>
+
+              <input id="editHall" type="text">
+
+            </div>
+
+
+            <button class="save-button" onclick="saveStudent()">
+              💾 Save Student Details
+            </button>
+
+            <span id="studentSaved" class="success"></span>
+
+          </div>
+
+
+
+          <!-- PROJECT -->
+
+          <div class="edit-card">
+
+            <h3>
+              🚀 Project Details
+            </h3>
+
+
+            <div class="edit-input">
+
+              <label>
+                Project Title
+              </label>
+
+              <input id="editProject" type="text">
+
+            </div>
+
+
+            <h3>
+              Member 1
+            </h3>
+
+
+            <div class="edit-input">
+
+              <label>
+                Name
+              </label>
+
+              <input id="m1Name">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                VH Number
+              </label>
+
+              <input id="m1VH">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Phone
+              </label>
+
+              <input id="m1Phone">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Email
+              </label>
+
+              <input id="m1Email">
+
+            </div>
+
+
+            <h3>
+              Member 2
+            </h3>
+
+
+            <div class="edit-input">
+
+              <label>
+                Name
+              </label>
+
+              <input id="m2Name">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                VH Number
+              </label>
+
+              <input id="m2VH">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Phone
+              </label>
+
+              <input id="m2Phone">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Email
+              </label>
+
+              <input id="m2Email">
+
+            </div>
+
+
+            <h3>
+              Member 3
+            </h3>
+
+
+            <div class="edit-input">
+
+              <label>
+                Name
+              </label>
+
+              <input id="m3Name">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                VH Number
+              </label>
+
+              <input id="m3VH">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Phone
+              </label>
+
+              <input id="m3Phone">
+
+            </div>
+
+
+            <div class="edit-input">
+
+              <label>
+                Email
+              </label>
+
+              <input id="m3Email">
+
+            </div>
+
+
+            <button class="save-button" onclick="saveProject()">
+              💾 Save Project Details
+            </button>
+
+            <span id="projectSaved" class="success"></span>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+
+    <footer>
+
+      © 2026 CampusPulse |
+      Vel Tech High Tech Engineering College |
+      ECE
+
     </footer>
 
-    <!-- App Logic Script -->
-    <script src="app.js"></script>
+
+  </div>
+
+
+  <!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+  <script>
+
+    /* =====================================================
+       LOGIN DETAILS
+    ===================================================== */
+
+    const LOGIN_ID = "14281";
+
+    const LOGIN_PASSWORD = "Mohanraj";
+
+
+
+    /* =====================================================
+       DEFAULT DATA
+    ===================================================== */
+
+    const DEFAULT_DATA = {
+
+      name: "MOHANRAJ V",
+
+      vh: "14281",
+
+      phone: "9790490878",
+
+      email: "vh14281@velhightech.com",
+
+      dept: "ECE",
+
+      sem: "III/V",
+
+      sec: "B",
+
+      hall: "H304",
+
+      project:
+        "Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading",
+
+
+      members: [
+
+        {
+          name: "MOHANRAJ V",
+          vh: "14281",
+          phone: "9790490878",
+          email: "vh14281@velhightech.com"
+        },
+
+        {
+          name: "ARJUN S",
+          vh: "14282",
+          phone: "9876543210",
+          email: "vh14282@velhightech.com"
+        },
+
+        {
+          name: "KAVIYA R",
+          vh: "14283",
+          phone: "9123456789",
+          email: "vh14283@velhightech.com"
+        }
+
+      ]
+
+    };
+
+
+
+    /* =====================================================
+       GET DATA
+    ===================================================== */
+
+    function getData() {
+
+      const saved =
+        localStorage.getItem(
+          "campuspulse_data"
+        );
+
+      if (saved) {
+
+        return JSON.parse(saved);
+
+      }
+
+      return JSON.parse(
+        JSON.stringify(DEFAULT_DATA)
+      );
+
+    }
+
+
+
+    /* =====================================================
+       SAVE DATA
+    ===================================================== */
+
+    function saveData(data) {
+
+      localStorage.setItem(
+        "campuspulse_data",
+        JSON.stringify(data)
+      );
+
+    }
+
+
+
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
+    function login() {
+
+      const id =
+        document
+          .getElementById("loginId")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value
+          .trim();
+
+
+      const error =
+        document.getElementById(
+          "loginError"
+        );
+
+
+      if (
+        id === LOGIN_ID &&
+        password === LOGIN_PASSWORD
+      ) {
+
+        error.style.display =
+          "none";
+
+
+        /*
+         IMPORTANT:
+
+         Directly show dashboard.
+
+         NO loading page.
+         NO setTimeout.
+         NO page reload.
+        */
+
+        document.getElementById(
+          "loginPage"
+        ).style.display = "none";
+
+
+        document.getElementById(
+          "appPage"
+        ).style.display = "block";
+
+
+        loadAllData();
+
+        startClock();
+
+      }
+      else {
+
+        error.style.display =
+          "block";
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       ENTER KEY LOGIN
+    ===================================================== */
+
+    document
+      .getElementById("loginPassword")
+      .addEventListener(
+        "keydown",
+        function (event) {
+
+          if (event.key === "Enter") {
+
+            login();
+
+          }
+
+        }
+      );
+
+
+
+    /* =====================================================
+       LIVE CLOCK
+    ===================================================== */
+
+    var clockTimer = null;
+
+    function updateClock() {
+
+      var now = new Date();
+
+      /* ---- Time HH:MM:SS ---- */
+      var h = String(now.getHours()).padStart(2, '0');
+      var m = String(now.getMinutes()).padStart(2, '0');
+      var s = String(now.getSeconds()).padStart(2, '0');
+      var timeStr = h + ':' + m + ':' + s;
+
+      /* ---- Date string ---- */
+      var months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      var days = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday',
+        'Thursday', 'Friday', 'Saturday'
+      ];
+      var dayName = days[now.getDay()];
+      var dateStr = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+      /* ---- Greeting ---- */
+      var hr = now.getHours();
+      var greet = '🌅 Good Morning';
+      if (hr >= 12 && hr < 17) greet = '🌤️ Good Afternoon';
+      else if (hr >= 17) greet = '🌙 Good Evening';
+
+      /* ---- Update Navbar ---- */
+      var nt = document.getElementById('navTime');
+      var nd = document.getElementById('navDate');
+      if (nt) nt.textContent = timeStr;
+      if (nd) nd.textContent = dateStr;
+
+      /* ---- Update Hero ---- */
+      var ht = document.getElementById('heroTime');
+      var hd = document.getElementById('heroDate');
+      var hdy = document.getElementById('heroDay');
+      var gt = document.getElementById('greetingTag');
+      if (ht) ht.textContent = timeStr;
+      if (hd) hd.textContent = dateStr;
+      if (hdy) hdy.textContent = dayName;
+      if (gt) gt.textContent = greet;
+
+    }
+
+    function startClock() {
+      updateClock();
+      if (clockTimer) clearInterval(clockTimer);
+      clockTimer = setInterval(updateClock, 1000);
+    }
+
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+      document.getElementById(
+        "appPage"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "loginPage"
+      ).style.display = "flex";
+
+
+      document.getElementById(
+        "loginId"
+      ).value = "";
+
+
+      document.getElementById(
+        "loginPassword"
+      ).value = "";
+
+    }
+
+
+
+    /* =====================================================
+       SHOW PAGE
+    
+       IMPORTANT:
+       This changes sections without reloading.
+    ===================================================== */
+
+    function showPage(
+      pageName,
+      button
+    ) {
+
+      document
+        .querySelectorAll(
+          ".page-section"
+        )
+        .forEach(
+          function (section) {
+
+            section.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+      document
+        .getElementById(pageName)
+        .classList.add("active");
+
+
+      document
+        .querySelectorAll(
+          ".nav-links button"
+        )
+        .forEach(
+          function (btn) {
+
+            btn.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+      if (button) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+
+
+      if (pageName === "edit") {
+
+        loadEditFields();
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       LOAD EVERYTHING
+    ===================================================== */
+
+    function loadAllData() {
+
+      loadHome();
+
+      loadProject();
+
+      loadEditFields();
+
+    }
+
+
+
+    /* =====================================================
+       LOAD HOME
+    ===================================================== */
+
+    function loadHome() {
+
+      const data =
+        getData();
+
+
+      document.getElementById(
+        "welcomeText"
+      ).textContent =
+        "Welcome, " +
+        data.name +
+        "!";
+
+
+      document.getElementById(
+        "homeName"
+      ).textContent =
+        data.name;
+
+
+      document.getElementById(
+        "homeVH"
+      ).textContent =
+        data.vh;
+
+
+      document.getElementById(
+        "homeDept"
+      ).textContent =
+        data.dept;
+
+
+      document.getElementById(
+        "homeSem"
+      ).textContent =
+        data.sem;
+
+
+      document.getElementById(
+        "homeSec"
+      ).textContent =
+        data.sec;
+
+
+      document.getElementById(
+        "homeHall"
+      ).textContent =
+        data.hall;
+
+
+      document.getElementById(
+        "homePhone"
+      ).textContent =
+        data.phone;
+
+
+      document.getElementById(
+        "homeEmail"
+      ).textContent =
+        data.email;
+
+    }
+
+
+
+    /* =====================================================
+       LOAD PROJECT
+    ===================================================== */
+
+    function loadProject() {
+
+      const data =
+        getData();
+
+
+      document.getElementById(
+        "projectTitle"
+      ).textContent =
+        data.project;
+
+
+      data.members.forEach(
+        function (member, index) {
+
+          const n =
+            index + 1;
+
+
+          document.getElementById(
+            "member" + n + "Name"
+          ).textContent =
+            member.name;
+
+
+          document.getElementById(
+            "member" + n + "VH"
+          ).textContent =
+            member.vh;
+
+
+          document.getElementById(
+            "member" + n + "Phone"
+          ).textContent =
+            member.phone;
+
+
+          document.getElementById(
+            "member" + n + "Email"
+          ).textContent =
+            member.email;
+
+
+          document.getElementById(
+            "av" + n
+          ).textContent =
+            member.name
+              .charAt(0)
+              .toUpperCase();
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       LOAD EDIT FIELDS
+    ===================================================== */
+
+    function loadEditFields() {
+
+      const data =
+        getData();
+
+
+      document.getElementById(
+        "editName"
+      ).value =
+        data.name;
+
+
+      document.getElementById(
+        "editVH"
+      ).value =
+        data.vh;
+
+
+      document.getElementById(
+        "editPhone"
+      ).value =
+        data.phone;
+
+
+      document.getElementById(
+        "editEmail"
+      ).value =
+        data.email;
+
+
+      document.getElementById(
+        "editDept"
+      ).value =
+        data.dept;
+
+
+      document.getElementById(
+        "editSem"
+      ).value =
+        data.sem;
+
+
+      document.getElementById(
+        "editSec"
+      ).value =
+        data.sec;
+
+
+      document.getElementById(
+        "editHall"
+      ).value =
+        data.hall;
+
+
+      document.getElementById(
+        "editProject"
+      ).value =
+        data.project;
+
+
+      data.members.forEach(
+        function (member, index) {
+
+          const n =
+            index + 1;
+
+
+          document.getElementById(
+            "m" + n + "Name"
+          ).value =
+            member.name;
+
+
+          document.getElementById(
+            "m" + n + "VH"
+          ).value =
+            member.vh;
+
+
+          document.getElementById(
+            "m" + n + "Phone"
+          ).value =
+            member.phone;
+
+
+          document.getElementById(
+            "m" + n + "Email"
+          ).value =
+            member.email;
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       SAVE STUDENT
+    ===================================================== */
+
+    function saveStudent() {
+
+      const data =
+        getData();
+
+
+      data.name =
+        document
+          .getElementById("editName")
+          .value
+          .trim();
+
+
+      data.vh =
+        document
+          .getElementById("editVH")
+          .value
+          .trim();
+
+
+      data.phone =
+        document
+          .getElementById("editPhone")
+          .value
+          .trim();
+
+
+      data.email =
+        document
+          .getElementById("editEmail")
+          .value
+          .trim();
+
+
+      data.dept =
+        document
+          .getElementById("editDept")
+          .value
+          .trim();
+
+
+      data.sem =
+        document
+          .getElementById("editSem")
+          .value
+          .trim();
+
+
+      data.sec =
+        document
+          .getElementById("editSec")
+          .value
+          .trim();
+
+
+      data.hall =
+        document
+          .getElementById("editHall")
+          .value
+          .trim();
+
+
+      saveData(data);
+
+
+      /*
+         Update dashboard immediately.
+  
+         NO reload.
+      */
+
+      loadHome();
+
+
+      document.getElementById(
+        "studentSaved"
+      ).textContent =
+        "✓ Saved successfully";
+
+
+      setTimeout(
+        function () {
+
+          document.getElementById(
+            "studentSaved"
+          ).textContent = "";
+
+        },
+        2500
+      );
+
+    }
+
+
+
+    /* =====================================================
+       SAVE PROJECT
+    ===================================================== */
+
+    function saveProject() {
+
+      const data =
+        getData();
+
+
+      data.project =
+        document
+          .getElementById("editProject")
+          .value
+          .trim();
+
+
+      for (
+        let i = 1;
+        i <= 3;
+        i++
+      ) {
+
+        data.members[i - 1] = {
+
+          name:
+            document
+              .getElementById(
+                "m" + i + "Name"
+              )
+              .value
+              .trim(),
+
+          vh:
+            document
+              .getElementById(
+                "m" + i + "VH"
+              )
+              .value
+              .trim(),
+
+          phone:
+            document
+              .getElementById(
+                "m" + i + "Phone"
+              )
+              .value
+              .trim(),
+
+          email:
+            document
+              .getElementById(
+                "m" + i + "Email"
+              )
+              .value
+              .trim()
+
+        };
+
+      }
+
+
+      saveData(data);
+
+
+      /*
+         Update project immediately.
+  
+         NO reload.
+      */
+
+      loadProject();
+
+
+      document.getElementById(
+        "projectSaved"
+      ).textContent =
+        "✓ Saved successfully";
+
+
+      setTimeout(
+        function () {
+
+          document.getElementById(
+            "projectSaved"
+          ).textContent = "";
+
+        },
+        2500
+      );
+
+    }
+
+
+
+    /* =====================================================
+       STARTUP
+    ===================================================== */
+
+    function initStartup() {
+        startClock();
+
+        /*
+           Keep login page visible
+           when the website first opens.
+        */
+        var lp = document.getElementById("loginPage");
+        var ap = document.getElementById("appPage");
+        if(lp) lp.style.display = "flex";
+        if(ap) ap.style.display = "none";
+    }
+
+    window.addEventListener("DOMContentLoaded", initStartup);
+    window.addEventListener("load", startClock);
+
+    /* Run immediately in case DOM is already ready */
+    startClock();
+
+  </script>
+
 </body>
+
 </html>
