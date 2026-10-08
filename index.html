@@ -1802,14 +1802,14 @@
 
           <div class="member-grid">
 
-            <!-- MEMBER 1: T G KAVIPRIYA -->
+            <!-- MEMBER 1: Mohanraj V -->
             <div class="member-card">
               <div class="member-header">
                 <div class="member-identity">
-                  <div id="av1" class="member-avatar">TG</div>
+                  <div id="av1" class="member-avatar">MV</div>
                   <div class="member-info">
-                    <h3 id="member1Name">T G KAVIPRIYA</h3>
-                    <div id="member1VH" class="vh-tag">VH14263</div>
+                    <h3 id="member1Name">Mohanraj V</h3>
+                    <div id="member1VH" class="vh-tag">VH14281</div>
                   </div>
                 </div>
                 <div class="member-actions">
@@ -1821,11 +1821,11 @@
               <div class="member-details-list">
                 <div class="member-detail-row">
                   <span class="icon">📞</span>
-                  <span id="member1Phone">8056574250</span>
+                  <span id="member1Phone">9790490878</span>
                 </div>
                 <div class="member-detail-row">
                   <span class="icon">✉️</span>
-                  <span id="member1Email">vh14263@velhightech.com</span>
+                  <span id="member1Email">vh14281@velhightech.com</span>
                 </div>
               </div>
 
@@ -1866,14 +1866,14 @@
               </div>
             </div>
 
-            <!-- MEMBER 3: Mohanraj V -->
+            <!-- MEMBER 3: T G KAVIPRIYA -->
             <div class="member-card">
               <div class="member-header">
                 <div class="member-identity">
-                  <div id="av3" class="member-avatar">MV</div>
+                  <div id="av3" class="member-avatar">TG</div>
                   <div class="member-info">
-                    <h3 id="member3Name">Mohanraj V</h3>
-                    <div id="member3VH" class="vh-tag">VH14281</div>
+                    <h3 id="member3Name">T G KAVIPRIYA</h3>
+                    <div id="member3VH" class="vh-tag">VH14263</div>
                   </div>
                 </div>
                 <div class="member-actions">
@@ -1885,11 +1885,11 @@
               <div class="member-details-list">
                 <div class="member-detail-row">
                   <span class="icon">📞</span>
-                  <span id="member3Phone">9790490878</span>
+                  <span id="member3Phone">8056574250</span>
                 </div>
                 <div class="member-detail-row">
                   <span class="icon">✉️</span>
-                  <span id="member3Email">vh14281@velhightech.com</span>
+                  <span id="member3Email">vh14263@velhightech.com</span>
                 </div>
               </div>
 
@@ -2276,10 +2276,10 @@
 
       members: [
         {
-          name: "T G KAVIPRIYA",
-          vh: "VH14263",
-          phone: "8056574250",
-          email: "vh14263@velhightech.com"
+          name: "Mohanraj V",
+          vh: "VH14281",
+          phone: "9790490878",
+          email: "vh14281@velhightech.com"
         },
         {
           name: "Dhanalakshmi S",
@@ -2288,10 +2288,10 @@
           email: "vh14239@velhightech.com"
         },
         {
-          name: "Mohanraj V",
-          vh: "VH14281",
-          phone: "9790490878",
-          email: "vh14281@velhightech.com"
+          name: "T G KAVIPRIYA",
+          vh: "VH14263",
+          phone: "8056574250",
+          email: "vh14263@velhightech.com"
         }
       ]
 
@@ -2313,11 +2313,12 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // Auto-migrate: if stored data does not have the updated team members, update immediately
-          var hasNewTeam = parsed.members && parsed.members.some(function(m){
-            return m.name && m.name.toUpperCase().includes("KAVIPRIYA");
-          });
-          if (!hasNewTeam) {
+          // Auto-migrate: ensure members are 1. Mohanraj, 2. Dhanalakshmi, 3. Kavipriya
+          var isMatch = parsed.members && parsed.members.length === 3 &&
+            parsed.members[0].name && parsed.members[0].name.toUpperCase().includes("MOHANRAJ") &&
+            parsed.members[1].name && parsed.members[1].name.toUpperCase().includes("DHANALAKSHMI") &&
+            parsed.members[2].name && parsed.members[2].name.toUpperCase().includes("KAVIPRIYA");
+          if (!isMatch) {
             parsed.members = JSON.parse(JSON.stringify(DEFAULT_DATA.members));
             saveData(parsed);
           }
