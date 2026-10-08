@@ -459,43 +459,122 @@
     }
 
     .member-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
-      gap: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
 
-    .member {
-      background: var(--card2);
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 15px;
-      padding: 20px;
+    .member-card {
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
+    .member-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 122, 0, 0.3);
+    }
 
+    .member-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .member-identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .member-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ff7a00, #ff9e00);
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background: linear-gradient(135deg,
-          var(--primary),
-          var(--secondary));
-
-      font-weight: bold;
-      margin-bottom: 12px;
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
     }
 
-    .member h3 {
-      margin-bottom: 10px;
+    .member-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
     }
 
-    .member p {
-      color: var(--muted);
-      line-height: 1.8;
+    .member-info .vh-tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ff9d00;
+      letter-spacing: 0.5px;
+    }
+
+    .member-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-icon-btn {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 6px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .action-icon-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .member-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .member-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    .member-detail-row .icon {
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+    }
+
+    .member-project-badge {
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 13.5px;
+      font-style: italic;
+      color: #94a3b8;
+      line-height: 1.55;
     }
 
     /* ================= EDIT ================= */
@@ -1723,116 +1802,101 @@
 
           <div class="member-grid">
 
-
-            <div class="member">
-
-              <div id="av1" class="avatar">
-                M
+            <!-- MEMBER 1: T G KAVIPRIYA -->
+            <div class="member-card">
+              <div class="member-header">
+                <div class="member-identity">
+                  <div id="av1" class="member-avatar">TG</div>
+                  <div class="member-info">
+                    <h3 id="member1Name">T G KAVIPRIYA</h3>
+                    <div id="member1VH" class="vh-tag">VH14263</div>
+                  </div>
+                </div>
+                <div class="member-actions">
+                  <button class="action-icon-btn" onclick="goToEditMember(1)" title="Edit details">✏️</button>
+                  <button class="action-icon-btn" onclick="deleteMember(1)" title="Clear details">🗑️</button>
+                </div>
               </div>
 
-              <h3 id="member1Name">
-                MOHANRAJ V
-              </h3>
-
-              <p>
-
-                VH No:
-                <strong id="member1VH">
-                  14281
-                </strong>
-
-                <br>
-
-                📞
-                <span id="member1Phone">
-                  9790490878
-                </span>
-
-                <br>
-
-                ✉️
-                <span id="member1Email">
-                  vh14281@velhightech.com
-                </span>
-
-              </p>
-
-            </div>
-
-
-
-            <div class="member">
-
-              <div id="av2" class="avatar">
-                A
+              <div class="member-details-list">
+                <div class="member-detail-row">
+                  <span class="icon">📞</span>
+                  <span id="member1Phone">8056574250</span>
+                </div>
+                <div class="member-detail-row">
+                  <span class="icon">✉️</span>
+                  <span id="member1Email">vh14263@velhightech.com</span>
+                </div>
               </div>
 
-              <h3 id="member2Name">
-                ARJUN S
-              </h3>
-
-              <p>
-
-                VH No:
-                <strong id="member2VH">
-                  14282
-                </strong>
-
-                <br>
-
-                📞
-                <span id="member2Phone">
-                  9876543210
-                </span>
-
-                <br>
-
-                ✉️
-                <span id="member2Email">
-                  vh14282@velhightech.com
-                </span>
-
-              </p>
-
+              <div class="member-project-badge">
+                <span class="memberProjectTitle">Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading</span>
+              </div>
             </div>
 
-
-
-            <div class="member">
-
-              <div id="av3" class="avatar">
-                K
+            <!-- MEMBER 2: Dhanalakshmi S -->
+            <div class="member-card">
+              <div class="member-header">
+                <div class="member-identity">
+                  <div id="av2" class="member-avatar">DS</div>
+                  <div class="member-info">
+                    <h3 id="member2Name">Dhanalakshmi S</h3>
+                    <div id="member2VH" class="vh-tag">VH14239</div>
+                  </div>
+                </div>
+                <div class="member-actions">
+                  <button class="action-icon-btn" onclick="goToEditMember(2)" title="Edit details">✏️</button>
+                  <button class="action-icon-btn" onclick="deleteMember(2)" title="Clear details">🗑️</button>
+                </div>
               </div>
 
-              <h3 id="member3Name">
-                KAVIYA R
-              </h3>
+              <div class="member-details-list">
+                <div class="member-detail-row">
+                  <span class="icon">📞</span>
+                  <span id="member2Phone">+919789195841</span>
+                </div>
+                <div class="member-detail-row">
+                  <span class="icon">✉️</span>
+                  <span id="member2Email">vh14239@velhightech.com</span>
+                </div>
+              </div>
 
-              <p>
-
-                VH No:
-                <strong id="member3VH">
-                  14283
-                </strong>
-
-                <br>
-
-                📞
-                <span id="member3Phone">
-                  9123456789
-                </span>
-
-                <br>
-
-                ✉️
-                <span id="member3Email">
-                  vh14283@velhightech.com
-                </span>
-
-              </p>
-
+              <div class="member-project-badge">
+                <span class="memberProjectTitle">Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading</span>
+              </div>
             </div>
 
+            <!-- MEMBER 3: Mohanraj V -->
+            <div class="member-card">
+              <div class="member-header">
+                <div class="member-identity">
+                  <div id="av3" class="member-avatar">MV</div>
+                  <div class="member-info">
+                    <h3 id="member3Name">Mohanraj V</h3>
+                    <div id="member3VH" class="vh-tag">VH14281</div>
+                  </div>
+                </div>
+                <div class="member-actions">
+                  <button class="action-icon-btn" onclick="goToEditMember(3)" title="Edit details">✏️</button>
+                  <button class="action-icon-btn" onclick="deleteMember(3)" title="Clear details">🗑️</button>
+                </div>
+              </div>
+
+              <div class="member-details-list">
+                <div class="member-detail-row">
+                  <span class="icon">📞</span>
+                  <span id="member3Phone">9790490878</span>
+                </div>
+                <div class="member-detail-row">
+                  <span class="icon">✉️</span>
+                  <span id="member3Email">vh14281@velhightech.com</span>
+                </div>
+              </div>
+
+              <div class="member-project-badge">
+                <span class="memberProjectTitle">Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading</span>
+              </div>
+            </div>
 
           </div>
 
@@ -2211,28 +2275,24 @@
 
 
       members: [
-
         {
-          name: "MOHANRAJ V",
-          vh: "14281",
+          name: "T G KAVIPRIYA",
+          vh: "VH14263",
+          phone: "8056574250",
+          email: "vh14263@velhightech.com"
+        },
+        {
+          name: "Dhanalakshmi S",
+          vh: "VH14239",
+          phone: "+919789195841",
+          email: "vh14239@velhightech.com"
+        },
+        {
+          name: "Mohanraj V",
+          vh: "VH14281",
           phone: "9790490878",
           email: "vh14281@velhightech.com"
-        },
-
-        {
-          name: "ARJUN S",
-          vh: "14282",
-          phone: "9876543210",
-          email: "vh14282@velhightech.com"
-        },
-
-        {
-          name: "KAVIYA R",
-          vh: "14283",
-          phone: "9123456789",
-          email: "vh14283@velhightech.com"
         }
-
       ]
 
     };
@@ -2251,9 +2311,17 @@
         );
 
       if (saved) {
-
-        return JSON.parse(saved);
-
+        try {
+          const parsed = JSON.parse(saved);
+          // Auto-migrate if old members are in localStorage
+          if (parsed.members && parsed.members.some(function(m){ return m.name && (m.name.includes("ARJUN") || m.name.includes("KAVIYA R")); })) {
+            parsed.members = JSON.parse(JSON.stringify(DEFAULT_DATA.members));
+            saveData(parsed);
+          }
+          return Object.assign({}, DEFAULT_DATA, parsed);
+        } catch(e) {
+          console.error("getData error:", e);
+        }
       }
 
       return JSON.parse(
@@ -2612,62 +2680,75 @@
 
 
     /* =====================================================
-       LOAD PROJECT
+       LOAD PROJECT & MEMBER ACTIONS
     ===================================================== */
 
+    function getInitials(name) {
+      if (!name) return "CP";
+      const parts = name.trim().split(/\s+/).filter(Boolean);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+
     function loadProject() {
+      try {
+        const data = getData();
 
-      const data =
-        getData();
+        const pTitle = document.getElementById("projectTitle");
+        if (pTitle && data.project) pTitle.textContent = data.project;
 
+        const subBadges = document.querySelectorAll(".memberProjectTitle");
+        subBadges.forEach(function(el) {
+          if (data.project) el.textContent = data.project;
+        });
 
-      document.getElementById(
-        "projectTitle"
-      ).textContent =
-        data.project;
+        if (Array.isArray(data.members)) {
+          data.members.forEach(function (member, index) {
+            const n = index + 1;
+            const nameEl = document.getElementById("member" + n + "Name");
+            const vhEl = document.getElementById("member" + n + "VH");
+            const phoneEl = document.getElementById("member" + n + "Phone");
+            const emailEl = document.getElementById("member" + n + "Email");
+            const avEl = document.getElementById("av" + n);
 
-
-      data.members.forEach(
-        function (member, index) {
-
-          const n =
-            index + 1;
-
-
-          document.getElementById(
-            "member" + n + "Name"
-          ).textContent =
-            member.name;
-
-
-          document.getElementById(
-            "member" + n + "VH"
-          ).textContent =
-            member.vh;
-
-
-          document.getElementById(
-            "member" + n + "Phone"
-          ).textContent =
-            member.phone;
-
-
-          document.getElementById(
-            "member" + n + "Email"
-          ).textContent =
-            member.email;
-
-
-          document.getElementById(
-            "av" + n
-          ).textContent =
-            member.name
-              .charAt(0)
-              .toUpperCase();
-
+            if (nameEl) nameEl.textContent = member.name || "";
+            if (vhEl) {
+              var vhVal = member.vh || "";
+              vhEl.textContent = vhVal.toUpperCase().startsWith("VH") ? vhVal : "VH" + vhVal;
+            }
+            if (phoneEl) phoneEl.textContent = member.phone || "";
+            if (emailEl) emailEl.textContent = member.email || "";
+            if (avEl) avEl.textContent = getInitials(member.name);
+          });
         }
-      );
+      } catch(err) {
+        console.error("loadProject error:", err);
+      }
+    }
 
+    function goToEditMember(n) {
+      showPage('edit', document.getElementById('navEdit') || document.querySelector("button[onclick*='edit']"));
+      setTimeout(function() {
+        var field = document.getElementById('m' + n + 'Name');
+        if (field) {
+          field.focus();
+          field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    }
+
+    function deleteMember(n) {
+      if (confirm("Are you sure you want to clear Member " + n + " details?")) {
+        var data = getData();
+        if (data.members && data.members[n - 1]) {
+          data.members[n - 1] = { name: "Pending", vh: "VH-----", phone: "---", email: "---" };
+          saveData(data);
+          loadProject();
+          loadEditFields();
+        }
+      }
     }
 
 

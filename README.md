@@ -18,7 +18,10 @@
   - Detailed ECE exam schedules, venue (H303/H304), dates, and timings
 - **👥 Mini Project Batch Details**:
   - Project Title: *Passive Colorimetric H2S Exposure-Dosimeter Wristband with AI-Based Quantitative Reading*
-  - Team members with VH numbers, mobile numbers, and college emails
+  - Team members:
+    - **T G KAVIPRIYA** (`VH14263` • `8056574250` • `vh14263@velhightech.com`)
+    - **Dhanalakshmi S** (`VH14239` • `+919789195841` • `vh14239@velhightech.com`)
+    - **Mohanraj V** (`VH14281` • `9790490878` • `vh14281@velhightech.com`)
 - **⚙️ Dynamic Profile Editor**:
   - Instant in-app profile editor with `localStorage` persistence — update information without page reloads!
 
