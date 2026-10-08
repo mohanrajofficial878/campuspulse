@@ -2313,8 +2313,11 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          // Auto-migrate if old members are in localStorage
-          if (parsed.members && parsed.members.some(function(m){ return m.name && (m.name.includes("ARJUN") || m.name.includes("KAVIYA R")); })) {
+          // Auto-migrate: if stored data does not have the updated team members, update immediately
+          var hasNewTeam = parsed.members && parsed.members.some(function(m){
+            return m.name && m.name.toUpperCase().includes("KAVIPRIYA");
+          });
+          if (!hasNewTeam) {
             parsed.members = JSON.parse(JSON.stringify(DEFAULT_DATA.members));
             saveData(parsed);
           }
