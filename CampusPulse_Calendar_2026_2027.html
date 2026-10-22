@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusPulse Calendar 2026–2027</title>
+<style>
+  :root { --blue:#174ea6; --light:#eaf2ff; --border:#dbe3ef; --text:#172033; --muted:#64748b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Arial,Helvetica,sans-serif; background:#f4f7fb; color:var(--text); }
+  .wrap { max-width:1100px; margin:24px auto; padding:16px; }
+  .hero { background:linear-gradient(135deg,#123b7a,#2675d8); color:white; border-radius:18px; padding:24px; margin-bottom:18px; }
+  .hero h1 { margin:0 0 8px; font-size:clamp(24px,4vw,34px); }
+  .hero p { margin:0; opacity:.92; }
+  .layout { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr); gap:18px; align-items:start; }
+  .panel { background:white; border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:0 4px 18px rgba(20,50,90,.05); }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .nav { display:flex; gap:8px; align-items:center; }
+  button, select, input, textarea { font:inherit; }
+  button, select { border:1px solid var(--border); border-radius:9px; padding:9px 12px; background:white; cursor:pointer; }
+  button.primary { background:var(--blue); color:white; border-color:var(--blue); }
+  button:hover { filter:brightness(.97); }
+  #monthLabel { font-size:21px; font-weight:700; min-width:160px; text-align:center; }
+  .weekdays, .days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; }
+  .weekdays div { text-align:center; color:var(--muted); font-size:12px; font-weight:700; padding:8px 0; }
+  .day { min-height:76px; border:1px solid var(--border); border-radius:10px; padding:7px; background:#fff; text-align:left; position:relative; overflow:hidden; }
+  .day.empty { background:#f8fafc; border-color:transparent; cursor:default; }
+  .day.weekend { background:#fff8f1; }
+  .day.today { border:2px solid var(--blue); }
+  .day.selected { background:var(--light); border-color:var(--blue); }
+  .daynum { font-weight:700; font-size:14px; }
+  .dot { display:block; margin-top:7px; background:#dbeafe; color:#174ea6; border-radius:5px; padding:3px 4px; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .day.weekend .daynum { color:#b45309; }
+  .hint { color:var(--muted); font-size:12px; margin-top:12px; }
+  .event-date { color:var(--blue); font-weight:700; margin-bottom:12px; }
+  label { display:block; font-weight:700; font-size:13px; margin:12px 0 6px; }
+  input, textarea, select.field { width:100%; border:1px solid var(--border); border-radius:9px; padding:10px; background:white; }
+  textarea { resize:vertical; min-height:70px; }
+  .form-actions { display:flex; gap:8px; margin-top:12px; }
+  .form-actions button { flex:1; }
+  .event-list { margin-top:20px; }
+  .event-item { border:1px solid var(--border); border-radius:10px; padding:11px; margin-top:8px; display:flex; gap:10px; justify-content:space-between; align-items:flex-start; }
+  .event-item strong { display:block; margin-bottom:4px; overflow-wrap:anywhere; }
+  .event-item small { color:var(--muted); white-space:pre-wrap; overflow-wrap:anywhere; }
+  .delete { color:#b91c1c; border-color:#fecaca; padding:5px 8px; }
+  .empty-msg { color:var(--muted); font-size:14px; padding:12px 0; }
+  .footer { color:var(--muted); font-size:12px; text-align:center; padding:20px 0 4px; }
+  @media(max-width:760px) { .layout { grid-template-columns:1fr; } .day { min-height:58px; padding:5px; } .dot { font-size:9px; } .panel { padding:12px; } .wrap { padding:10px; margin:10px auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>📅 CampusPulse Calendar</h1>
+    <p>Academic planner • Calendar years 2026 and 2027 • Events and reminders</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-label="Calendar">
+      <div class="controls">
+        <div class="nav">
+          <button id="prevBtn" aria-label="Previous month">←</button>
+          <button id="todayBtn">Today</button>
+          <button id="nextBtn" aria-label="Next month">→</button>
+        </div>
+        <div id="monthLabel">Month Year</div>
+        <select id="yearSelect" aria-label="Choose year">
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+      <div class="weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div id="days" class="days"></div>
+      <p class="hint">Select any date to add an event. Sundays and Saturdays are lightly highlighted.</p>
+    </section>
+
+    <aside class="panel">
+      <div class="event-date" id="selectedDateLabel">Selected date</div>
+      <form id="eventForm">
+        <label for="eventTitle">Event title *</label>
+        <input id="eventTitle" maxlength="100" required placeholder="e.g. Semester exam">
+        <label for="eventType">Category</label>
+        <select id="eventType" class="field">
+          <option>Reminder</option><option>Exam</option><option>College event</option><option>Assignment</option><option>Personal</option>
+        </select>
+        <label for="eventNotes">Notes (optional)</label>
+        <textarea id="eventNotes" maxlength="500" placeholder="Time, venue or other details"></textarea>
+        <div class="form-actions">
+          <button class="primary" type="submit">Save event</button>
+          <button type="reset" id="clearForm">Clear</button>
+        </div>
+      </form>
+      <div class="event-list">
+        <h3 style="margin-bottom:6px">Events for this date</h3>
+        <div id="eventList" class="empty-msg">No events for this date.</div>
+      </div>
+    </aside>
+  </main>
+  <div class="footer">CampusPulse Calendar • Events are saved in this browser on this device.</div>
+</div>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const today = new Date();
+  let viewYear = (today.getFullYear() === 2027) ? 2027 : 2026;
+  let viewMonth = today.getFullYear() >= 2026 && today.getFullYear() <= 2027 ? today.getMonth() : 0;
+  let selected = `${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${String(today.getFullYear() >= 2026 && today.getFullYear() <= 2027 ? today.getDate() : 1).padStart(2,'0')}`;
+  const STORAGE_KEY = 'campuspulse_calendar_events_v1';
+  let events = {};
+  try { events = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_) { events = {}; }
+
+  const pad = n => String(n).padStart(2,'0');
+  const dateKey = (y,m,d) => `${y}-${pad(m+1)}-${pad(d)}`;
+  const safe = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const monthName = (y,m) => new Date(y,m,1).toLocaleString(undefined,{month:'long',year:'numeric'});
+  function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(events)); } catch (_) { alert('Could not save in this browser. Check browser storage settings.'); } }
+  function render() {
+    $('monthLabel').textContent = monthName(viewYear,viewMonth);
+    $('yearSelect').value = String(viewYear);
+    $('days').innerHTML = '';
+    const firstDay = new Date(viewYear,viewMonth,1).getDay();
+    const total = new Date(viewYear,viewMonth+1,0).getDate();
+    for(let i=0;i<firstDay;i++) {
+      const blank = document.createElement('div'); blank.className='day empty'; blank.setAttribute('aria-hidden','true'); $('days').appendChild(blank);
+    }
+    for(let d=1;d<=total;d++) {
+      const key = dateKey(viewYear,viewMonth,d);
+      const weekday = new Date(viewYear,viewMonth,d).getDay();
+      const btn = document.createElement('button');
+      btn.type='button'; btn.className='day' + (weekday===0||weekday===6?' weekend':'') + (key===selected?' selected':'') + (key===dateKey(today.getFullYear(),today.getMonth(),today.getDate())?' today':'');
+      btn.setAttribute('aria-label', `${key}${events[key] ? ', '+events[key].length+' events' : ''}`);
+      let inside = `<span class="daynum">${d}</span>`;
+      (events[key]||[]).slice(0,2).forEach(ev => inside += `<span class="dot">${safe(ev.title)}</span>`);
+      if((events[key]||[]).length>2) inside += `<span class="dot">+${events[key].length-2} more</span>`;
+      btn.innerHTML=inside;
+      btn.addEventListener('click',()=>{ selected=key; render(); renderEvents(); });
+      $('days').appendChild(btn);
+    }
+    $('selectedDateLabel').textContent = new Date(selected+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    renderEvents();
+  }
+  function renderEvents() {
+    const list=$('eventList'); const todays=events[selected]||[];
+    if(!todays.length) { list.className='empty-msg'; list.textContent='No events for this date.'; return; }
+    list.className='';
+    list.innerHTML=todays.map((ev,i)=>`<div class="event-item"><div><strong>${safe(ev.title)}</strong><small>${safe(ev.type)}${ev.notes ? '\n'+safe(ev.notes):''}</small></div><button class="delete" type="button" data-index="${i}" aria-label="Delete ${safe(ev.title)}">Delete</button></div>`).join('');
+    list.querySelectorAll('button[data-index]').forEach(btn=>btn.addEventListener('click',()=>{
+      const idx=Number(btn.dataset.index);
+      if(!confirm('Delete this event?')) return;
+      events[selected].splice(idx,1); if(!events[selected].length) delete events[selected];
+      save(); render();
+    }));
+  }
+  $('eventForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const title=$('eventTitle').value.trim(); if(!title) return;
+    if(!events[selected]) events[selected]=[];
+    events[selected].push({title,type:$('eventType').value,notes:$('eventNotes').value.trim()});
+    save(); $('eventForm').reset(); render();
+  });
+  $('prevBtn').addEventListener('click',()=>changeMonth(-1));
+  $('nextBtn').addEventListener('click',()=>changeMonth(1));
+  function changeMonth(delta) {
+    const dt=new Date(viewYear,viewMonth+delta,1);
+    if(dt.getFullYear()<2026 || dt.getFullYear()>2027) { alert('This calendar includes 2026 and 2027 only.'); return; }
+    viewYear=dt.getFullYear(); viewMonth=dt.getMonth();
+    selected=dateKey(viewYear,viewMonth,1); render();
+  }
+  $('yearSelect').addEventListener('change',()=>{
+    viewYear=Number($('yearSelect').value); selected=dateKey(viewYear,viewMonth,1); render();
+  });
+  $('todayBtn').addEventListener('click',()=>{
+    if(today.getFullYear()<2026 || today.getFullYear()>2027) { viewYear=2026; viewMonth=0; selected=dateKey(2026,0,1); }
+    else { viewYear=today.getFullYear(); viewMonth=today.getMonth(); selected=dateKey(viewYear,viewMonth,today.getDate()); }
+    render();
+  });
+  $('clearForm').addEventListener('click',()=>setTimeout(()=>$('eventTitle').focus(),0));
+  render();
+})();
+</script>
+</body>
+</html>
