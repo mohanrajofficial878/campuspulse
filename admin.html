@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusPulse Admin Dashboard</title>
+<style>
+:root{--bg:#080d19;--card:#111a2b;--card2:#172238;--p:#6c63ff;--s:#00d4ff;--g:#06d6a0;--y:#ffd166;--r:#ff6b6b;--muted:#8d9ab0;--border:rgba(108,99,255,.3)}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#edf2ff}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;font-weight:700}
+.primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff}.secondary{background:#26314b;color:#eaf2ff}.danger{background:#8c293a;color:#fff}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top,#18234a,#080d19 60%)}
+.login-card,.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 16px 50px #0003}
+.login-card{width:min(430px,100%);text-align:center;padding:32px}.logo{width:65px;height:65px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,var(--p),var(--s))}
+label{display:block;margin:13px 0 6px;font-size:13px;color:#bac7dc;font-weight:bold}
+input,textarea,select{width:100%;padding:11px;border-radius:8px;border:1px solid var(--border);background:#0c1424;color:#fff}
+textarea{min-height:75px;resize:vertical}.error{color:var(--r);min-height:20px;font-size:13px}.muted{color:var(--muted);font-size:13px;line-height:1.5}
+#app{display:none}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 22px;background:#0c1323;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.brand{font-size:20px;font-weight:bold}.wrap{max-width:1250px;margin:auto;padding:20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tabs button{background:#18233b;color:#b8c5db;border:1px solid var(--border)}.tabs button.active{background:linear-gradient(135deg,var(--p),#167eaa);color:#fff}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.formrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.item{border:1px solid var(--border);border-radius:12px;padding:14px;margin:12px 0;background:#0e1728}
+.item h3{margin:0 0 10px;color:var(--s);font-size:16px}.item .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:10px;border:1px solid #26324a;text-align:left;font-size:13px}th{color:var(--s);background:#12203a}.tablewrap{overflow:auto;border-radius:10px;margin-top:12px}
+.notice{padding:12px;border-left:4px solid var(--y);background:#28253a;border-radius:8px;margin:12px 0}.status{color:var(--g);font-size:13px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:22px}
+@media(max-width:600px){.wrap{padding:12px}.top{padding:14px}.login-card{padding:23px}}
+</style>
+</head>
+<body>
+<section class="login-wrap" id="loginPage">
+  <div class="login-card">
+    <div class="logo">🎓</div>
+    <h1>CampusPulse Admin</h1>
+    <p class="muted">Vel Tech High Tech • Administration</p>
+    <form id="loginForm">
+      <label for="adminId">Admin ID</label><input id="adminId" autocomplete="username" required>
+      <label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required>
+      <button class="primary" style="width:100%;margin-top:18px" type="submit">Admin Login</button>
+      <p class="error" id="loginError"></p>
+    </form>
+    <p class="muted">Prototype access: ID 4146 / Password 4146</p>
+  </div>
+</section>
+<div id="app">
+  <header class="top">
+    <div class="brand">🎓 CampusPulse Admin Dashboard</div>
+    <div><span id="savedStatus" class="status">Ready</span> <button class="secondary" id="exportBtn">Export backup</button> <button class="danger" id="logoutBtn">Logout</button></div>
+  </header>
+  <main class="wrap">
+    <div class="notice"><b>Prototype storage notice:</b> This add-on saves changes in this browser only. It does not yet sync updates to the public student website or other devices. See README before using it for real student data.</div>
+    <nav class="tabs">
+      <button class="active" data-tab="classPanel">Class Timetable</button>
+      <button data-tab="examPanel">Exam Timetable</button>
+      <button data-tab="batchPanel">Batch Details</button>
+      <button data-tab="noticePanel">Notices / Dashboard</button>
+    </nav>
+    <section id="classPanel" class="panel active">
+      <h2>Class Timetable</h2>
+      <p class="muted">Add, edit or delete class periods. Keep times and subject names accurate.</p>
+      <form id="classForm" class="card">
+        <input type="hidden" id="classEditId">
+        <div class="formrow">
+          <div><label>Day</label><select id="classDay"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select></div>
+          <div><label>Time</label><input id="classTime" placeholder="8:15–9:05" required></div>
+          <div><label>Subject / Activity</label><input id="classSubject" placeholder="Digital Signal Processing" required></div>
+          <div><label>Room / Staff (optional)</label><input id="classRoom" placeholder="H304 / Staff name"></div>
+        </div>
+        <button class="primary" type="submit">Save Class Period</button> <button class="secondary" type="button" id="classClear">Clear</button>
+      </form>
+      <div id="classList"></div>
+    </section>
+    <section id="examPanel" class="panel">
+      <h2>Exam Timetable</h2>
+      <p class="muted">Add or update exam dates, subjects, course codes and FN/AN sessions.</p>
+      <form id="examForm" class="card">
+        <input type="hidden" id="examEditId">
+        <div class="formrow">
+          <div><label>Course Code</label><input id="examCode" placeholder="21EC555PT" required></div>
+          <div><label>Subject</label><input id="examSubject" placeholder="Biomedical Instrumentation" required></div>
+          <div><label>Date</label><input id="examDate" type="date" required></div>
+          <div><label>Session</label><select id="examSession"><option>FN</option><option>AN</option></select></div>
+        </div>
+        <button class="primary" type="submit">Save Exam</button> <button class="secondary" type="button" id="examClear">Clear</button>
+      </form>
+      <div id="examList"></div>
+    </section>
+    <section id="batchPanel" class="panel">
+      <h2>Batch Details</h2>
+      <p class="muted">Manage project batch members. Avoid adding private information unless necessary.</p>
+      <form id="batchForm" class="card">
+        <input type="hidden" id="batchEditId">
+        <div class="formrow">
+          <div><label>Batch Name / Number</label><input id="batchName" placeholder="Batch 1" required></div>
+          <div><label>Project Title</label><input id="batchProject" placeholder="Mini Project II" required></div>
+          <div><label>Member Name</label><input id="batchMember" placeholder="Student name" required></div>
+          <div><label>VH Number</label><input id="batchVH" placeholder="VH14281"></div>
+          <div><label>Email (optional)</label><input id="batchEmail" type="email" placeholder="student@example.com"></div>
+          <div><label>Phone (optional)</label><input id="batchPhone" inputmode="tel" placeholder="Phone number"></div>
+        </div>
+        <button class="primary" type="submit">Save Batch Member</button> <button class="secondary" type="button" id="batchClear">Clear</button>
+      </form>
+      <div id="batchList"></div>
+    </section>
+    <section id="noticePanel" class="panel">
+      <h2>Notices / Dashboard Information</h2>
+      <form id="noticeForm" class="card">
+        <div class="formrow"><div><label>Dashboard heading</label><input id="dashHeading" placeholder="Student Information"></div><div><label>Section / Hall / Semester</label><input id="dashInfo" placeholder="III Year / V Semester • Section B • Hall H304"></div></div>
+        <label>Notice / Announcement</label><textarea id="dashNotice" placeholder="Enter announcement"></textarea>
+        <label>Mini Project Title</label><input id="dashProject" placeholder="Project title">
+        <button class="primary" type="submit">Save Dashboard Information</button>
+      </form>
+      <p class="muted" id="noticeStatus"></p>
+    </section>
+  </main>
+  <footer>CampusPulse Admin Add-on • Local prototype • Connect a secured backend for shared permanent updates.</footer>
+</div>
+<script>
+const KEY='campuspulse_admin_addon_v1';
+const defaults={classes:[],exams:[],batches:[],dashboard:{heading:'Student Information',info:'III Year / V Semester • ECE • Section B • Hall H304 • 2026–2027',notice:'ECE Department • Class In-Charge: update as needed',project:'Mini Project II'}};
+let data=loadData();
+function loadData(){try{return {...structuredClone(defaults),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return structuredClone(defaults)}}
+function saveData(){localStorage.setItem(KEY,JSON.stringify(data));document.getElementById('savedStatus').textContent='Saved in this browser';renderAll()}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();const ok=document.getElementById('adminId').value.trim()==='4146'&&document.getElementById('adminPassword').value==='4146';if(!ok){document.getElementById('loginError').textContent='Incorrect Admin ID or password.';return}document.getElementById('loginPage').style.display='none';document.getElementById('app').style.display='block';renderAll()});
+document.getElementById('logoutBtn').onclick=()=>{document.getElementById('app').style.display='none';document.getElementById('loginPage').style.display='grid';document.getElementById('adminPassword').value='';document.getElementById('loginError').textContent=''};
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))});
+function resetForm(prefix,form){form.reset();document.getElementById(prefix+'EditId').value=''}
+document.getElementById('classForm').onsubmit=e=>{e.preventDefault();const v={id:document.getElementById('classEditId').value||id(),day:classDay.value,time:classTime.value.trim(),subject:classSubject.value.trim(),room:classRoom.value.trim()};upsert('classes',v);resetForm('class',classForm)};
+document.getElementById('examForm').onsubmit=e=>{e.preventDefault();const v={id:examEditId.value||id(),code:examCode.value.trim(),subject:examSubject.value.trim(),date:examDate.value,session:examSession.value};upsert('exams',v);resetForm('exam',examForm)};
+document.getElementById('batchForm').onsubmit=e=>{e.preventDefault();const v={id:batchEditId.value||id(),batch:batchName.value.trim(),project:batchProject.value.trim(),member:batchMember.value.trim(),vh:batchVH.value.trim(),email:batchEmail.value.trim(),phone:batchPhone.value.trim()};upsert('batches',v);resetForm('batch',batchForm)};
+function upsert(key,v){const i=data[key].findIndex(x=>x.id===v.id);if(i<0)data[key].push(v);else data[key][i]=v;saveData()}
+function removeItem(key,itemId){if(confirm('Delete this item?')){data[key]=data[key].filter(x=>x.id!==itemId);saveData()}}
+function editItem(key,itemId){const x=data[key].find(x=>x.id===itemId);if(!x)return;if(key==='classes'){classEditId.value=x.id;classDay.value=x.day;classTime.value=x.time;classSubject.value=x.subject;classRoom.value=x.room;document.querySelector('[data-tab="classPanel"]').click()}if(key==='exams'){examEditId.value=x.id;examCode.value=x.code;examSubject.value=x.subject;examDate.value=x.date;examSession.value=x.session;document.querySelector('[data-tab="examPanel"]').click()}if(key==='batches'){batchEditId.value=x.id;batchName.value=x.batch;batchProject.value=x.project;batchMember.value=x.member;batchVH.value=x.vh;batchEmail.value=x.email;batchPhone.value=x.phone;document.querySelector('[data-tab="batchPanel"]').click()}}
+function renderList(key,elId,columns,labels){const el=document.getElementById(elId);if(!data[key].length){el.innerHTML='<p class="muted">No entries yet. Use the form above to add one.</p>';return}el.innerHTML='<div class="tablewrap"><table><thead><tr>'+labels.map(x=>'<th>'+x+'</th>').join('')+'<th>Actions</th></tr></thead><tbody>'+data[key].map(x=>'<tr>'+columns.map(c=>'<td>'+esc(x[c])+'</td>').join('')+'<td><button class="secondary" onclick="editItem(\\''+key+'\\',\\''+x.id+'\\')">Edit</button> <button class="danger" onclick="removeItem(\\''+key+'\\',\\''+x.id+'\\')">Delete</button></td></tr>').join('')+'</tbody></table></div>'}
+function renderAll(){renderList('classes','classList',['day','time','subject','room'],['Day','Time','Subject / Activity','Room / Staff']);renderList('exams','examList',['code','subject','date','session'],['Course Code','Subject','Date','Session']);renderList('batches','batchList',['batch','project','member','vh','email','phone'],['Batch','Project','Member','VH Number','Email','Phone']);dashHeading.value=data.dashboard.heading||'';dashInfo.value=data.dashboard.info||'';dashNotice.value=data.dashboard.notice||'';document.getElementById('dashProject').value=data.dashboard.project||''}
+document.getElementById('classClear').onclick=()=>resetForm('class',classForm);document.getElementById('examClear').onclick=()=>resetForm('exam',examForm);document.getElementById('batchClear').onclick=()=>resetForm('batch',batchForm);
+document.getElementById('noticeForm').onsubmit=e=>{e.preventDefault();data.dashboard={heading:dashHeading.value,info:dashInfo.value,notice:dashNotice.value,project:dashProject.value};saveData();document.getElementById('noticeStatus').textContent='Saved locally in this browser.'};
+document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='campuspulse-admin-backup.json';a.click();URL.revokeObjectURL(a.href)};
+renderAll();
+</script>
+</body>
+</html>
