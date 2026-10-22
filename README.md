@@ -7,7 +7,7 @@
 
 - **🔐 Secure Student Login**:
   - **Login ID / VH Number**: `14281`
-  - **Password**: `14281`
+  - **Password**: `Mohanraj`
 - **⏰ Live Real-Time Clock & Date**:
   - Real-time ticking 12-hour clock with AM/PM
   - Day, date, and smart greeting (Good Morning / Afternoon / Evening)
